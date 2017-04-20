@@ -2,6 +2,7 @@ var path = require('path');
 var archive = require('../helpers/archive-helpers');
 var httpHelpers = require('./http-helpers');
 var fs = require('fs');
+var worker = require('../workers/htmlfetcher');
 // require more modules/folders here!
 
 exports.handleRequest = function (req, res) {
@@ -36,8 +37,13 @@ exports.handleRequest = function (req, res) {
 
     httpHelpers.collectData(req, function(data) {
       archive.addUrlToList(data.slice(4), () => {
-        res.writeHead(302, httpHelpers.headers); 
-        res.end();
+        res.writeHead(302, httpHelpers.headers);
+        worker.htmlfetcher();
+
+        fs.readFile(archive.paths.loading, 'utf-8', function(err, data) {
+
+          res.end(data);
+        });
       });
       
     });
