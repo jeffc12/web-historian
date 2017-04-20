@@ -28,7 +28,7 @@ exports.initialize = function(pathsObj) {
 exports.readListOfUrls = function(callback) {
   fs.readFile(exports.paths.list, 'utf8', function(err, data) { 
     if (err) { throw err; }
-    callback(data.split('\n'));
+    callback(data.length ? data.split('\n') : []);
   });
 };
 
@@ -43,7 +43,7 @@ exports.addUrlToList = function(url, callback) {
     if (!urls.includes(url)) {
       urls.push(url);
 
-      fs.writeFile(exports.paths.list, urls.join('\n'), (err) => {
+      fs.writeFile(exports.paths.list, urls.join('\n') + '\n', (err) => {
         if (err) { throw err; }
       });
       callback();
