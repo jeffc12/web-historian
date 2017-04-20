@@ -27,24 +27,20 @@ exports.initialize = function(pathsObj) {
 
 exports.readListOfUrls = function(callback) {
   fs.readFile(exports.paths.list, 'utf8', function(err, data) { 
-    if (err) {
-      console.log(err);
-      return;
-    }
+    if (err) { throw err; }
     callback(data.split('\n'));
   });
 };
 
 exports.isUrlInList = function(url, callback) {
   exports.readListOfUrls(function(urls) {
-    return callback(urls.includes(url));
+    callback(urls.includes(url));
   });
 };
 
 exports.addUrlToList = function(url, callback) {
   exports.readListOfUrls(function(urls) {
     if (!urls.includes(url)) {
-      urls.pop();
       urls.push(url);
 
       fs.writeFile(exports.paths.list, urls.join('\n'), (err) => {

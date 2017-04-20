@@ -5,7 +5,6 @@ var fs = require('fs');
 // require more modules/folders here!
 
 exports.handleRequest = function (req, res) {
-  // res.end();
   fs.readFile(path.join(__dirname, '/public/index.html'), 'utf-8', function(err, data) {
 
     if (err) {
@@ -17,5 +16,4 @@ exports.handleRequest = function (req, res) {
     res.writeHead(200, httpHelpers.headers);
     res.end(data); 
   });
-  //res.end(archive.paths.list);
 };
